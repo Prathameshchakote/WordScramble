@@ -35,6 +35,15 @@ struct ContentView: View {
                 }
             }
             .navigationTitle(rootWord)
+            .toolbar(content: {
+                Button {
+                    usedWords = []
+                    startGame()
+                } label: {
+                    Text("restart")
+                }
+
+            })
             .onSubmit {
                 addNewWord()
             }
@@ -45,6 +54,13 @@ struct ContentView: View {
                 Text(errorMessage)
             }
         }
+        
+        withAnimation {
+            Text("total score : \(usedWords.count)")
+                .font(.title)
+                .bold()
+        }
+        
     }
     func startGame() {
         if let startwordTextURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
@@ -53,6 +69,7 @@ struct ContentView: View {
                 rootWord = allword.randomElement() ?? "apple"
                 return
             }
+            usedWords = []
         }
         
         fatalError("Could not load start.txt from bundle")
